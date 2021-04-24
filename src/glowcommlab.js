@@ -40,7 +40,12 @@ export function createWebsocket(msg, serviceUrl) {
         var uri = msg.content.data.wsuri
         var url;
     
-        url = serviceUrl + port + uri;
+        if (document.location.hostname.includes("localhost")){
+           url = "ws://localhost:" + port + uri;
+        }
+        else {
+           url = serviceUrl + port + uri;
+        }
         ws = new WebSocket(url);
         ws.binaryType = "arraybuffer";
 		
@@ -53,13 +58,13 @@ export function createWebsocket(msg, serviceUrl) {
         ws.onclose = function(evt) {
             ws = null
             isopen = false
-            // console.log("***WebSocket Connection Closed***");
+            console.log("***WebSocket Connection Closed***");
         };
  
         // Open Websocket callback
         ws.onopen = function(evt) {
             isopen = true
-            // console.log("***WebSocket Connection Opened***");
+            console.log("***WebSocket Connection Opened***");
         };
     }
 }
@@ -101,7 +106,6 @@ function fontloading() {
         })
     }
 	if (window.__font_serif === undefined) {
-		try{
         var fserif = datadir+'NimbusRomNo9L-Med.otf'
         opentype_load(fserif, function(err, fontrefserif) {
             if (err) {
@@ -111,9 +115,6 @@ function fontloading() {
                 console.log('SERIF FONT LOADED')
             }
         })
-		} catch(err) {
-			console.log(err)
-		}
     }
 }
 fontloading()
@@ -199,17 +200,7 @@ function send() { // periodically send events and update_canvas and request obje
 // Should eventually have glowcomm.html, glowcom.js, and glowcommlab.js all import this common component.
 
 window.__GSlang = "vpython"
-box = vp_box
-sphere = vp_sphere
-simple_sphere = vp_simple_sphere
-cylinder = vp_cylinder
-pyramid = vp_pyramid
-cone = vp_cone
-helix = vp_helix
-//ellipsoid = vp_ellipsoid
-ring = vp_ring
-arrow = vp_arrow
-compound = vp_compound
+
 function msclock() {
     "use strict";
     if (performance.now) return performance.now()
@@ -230,7 +221,7 @@ var lastrange = 1
 var lastautoscale = true
 var lastsliders = {}
 var lastkeysdown = []
-var interval = 33 // milliseconds
+var interval = 17 // milliseconds
 
 function update_canvas() { // mouse location and other stuff
     "use strict";
@@ -335,6 +326,8 @@ function send_pick(cvs, p, seg) {
     "use strict";
     var evt = {event: 'pick', 'canvas': cvs, 'pick': p, 'segment':seg}
 	events.push(evt)
+    if (timer !== null) clearTimeout(timer)
+    send() // send the info NOW
 }
 
 function send_compound(cvs, pos, size, up) {
@@ -342,6 +335,8 @@ function send_compound(cvs, pos, size, up) {
     var evt = {event: '_compound', 'canvas': cvs, 'pos': [pos.x, pos.y, pos.z], 
         'size': [size.x, size.y, size.z], 'up': [up.x, up.y, up.z]}
 	events.push(evt)
+    if (timer !== null) clearTimeout(timer)
+    send() // send the info NOW
 }
 
 var waitfor_canvas = null
@@ -487,7 +482,7 @@ var attrsb = {'a':'userzoom', 'b':'userspin', 'c':'range', 'd':'autoscale', 'e':
               'p':'left', 'q':'right', 'r':'top', 's':'bottom', 't':'_cloneid',
               'u':'logx', 'v':'logy', 'w':'dot', 'x':'dot_radius', 
               'y':'markers', 'z':'legend', 'A':'label','B':'delta', 'C':'marker_color',
-              'D':'size_units', 'E':'userpan', 'F':'scroll'}
+              'D':'size_units', 'E':'userpan', 'F':'scroll', 'G':'choices', 'H':'depth', 'I':'round'}
 
 // methods are X in {'m': '23X....'}
 var methods = {'a':'select', 'b':'pos', 'c':'start', 'd':'stop', 'f':'clear', // unused eghijklmnopvxyzCDFAB
@@ -502,7 +497,7 @@ var vecattrs = ['pos', 'up', 'color', 'trail_color', 'axis', 'size', 'origin', '
                 'marker_color']
                 
 var textattrs = ['text', 'align', 'caption', 'title', 'title_align', 'xtitle', 'ytitle', 'selected', 'capture',
-                 'label', 'append_to_caption', 'append_to_title', 'bind', 'unbind', 'pause', 'GSprint']
+                 'label', 'append_to_caption', 'append_to_title', 'bind', 'unbind', 'pause', 'GSprint', 'choices']
 
 // patt gets idx and attr code; vpatt gets x,y,z of a vector            
 var patt = /(\d+)(.)(.*)/
@@ -546,8 +541,18 @@ function decode(data) {
                     vs = [Number(val[1]), Number(val[2]), Number(val[3]), Number(val[4])]
                 }
 			} else if (textattrs.indexOf(attr) > -1) {
-                // '\n' doesn't survive JSON transmission, so in vpython.py we replace '\n' with '<br>'
-				val = m[3].replace(/<br>/g, "\n")
+                if (attr == 'choices') { // menu choices to be wrapped in a list
+                    val = m[3].slice(2,-2)
+                    val = val.replace(/'/g, '') // remove quotes
+                    val = val.replace(/,/g, '') // remove commas
+                    let s = val.split(' ')
+                    val = []
+                    let a
+                    for (a of s) {val.push(a)}
+                } else {
+                    // '\n' doesn't survive JSON transmission, so in vpython.py we replace '\n' with '<br>'
+                    val = m[3].replace(/<br>/g, "\n")
+                }
 			} else if (attr == 'rotate') { // angle,x,y,z,x,y,z
 				var temp = m[3]
 				val = []
@@ -570,6 +575,9 @@ function decode(data) {
 				}
 			} else if (attr == 'waitfor' || attr == 'pause' || attr == 'delete') {
 				val = m[3]
+            } else if (attr == 'follow') {
+                if (m[3] == 'None') val = null
+                else val = Number(m[3])
 			} else val = Number(m[3])
 			out = {'idx':idx, 'attr':attr, 'val':val}
 			if (datatype == 'attr') as.push(out)
@@ -614,11 +622,20 @@ function o2vec3(p) {
 function handler(data) {
     "use strict";
 	
-	/*
-	console.log('---------------')
-	for (var d in data) {
-		for (var i in data[d]) console.log(i, JSON.stringify(data[d][i]))
-	}
+    /*
+    // Debugging what is sent from server:
+    let found = false
+    for (let d in data) {
+        for (const i in data[d]) {
+            if (!found) {
+                found = true
+                console.log('================')
+            }
+            if (found) {
+                console.log(i, JSON.stringify(data[d][i]))
+            }
+        }
+    }
     */
 	
 	if (data.cmds !== undefined && data.cmds.length > 0) handle_cmds(data.cmds)
@@ -980,7 +997,8 @@ async function handle_methods(dmeth) {
 			}
 			obj.unbind(val, process_binding)
 		} else if (method === "follow") {
-			obj.camera.follow(glowObjs[val])
+            if (val === null) obj.camera.follow(null)
+			else obj.camera.follow(glowObjs[val])
 		} else if (method === "capture") {
 			await obj.capture(val)
 		} else if (method === 'waitfor') {
@@ -997,7 +1015,7 @@ async function handle_methods(dmeth) {
 			}
 			process_pause()
 		} else if (method === 'pick') {
-			var p = glowObjs[val].mouse.pick()   // wait for pick render; val is canvas
+			var p = glowObjs[val].mouse.pick()  // wait for pick render; val is canvas
 			var seg = null
 			if (p !== null) {
 				if (p instanceof curve) seg = p.segment
