@@ -541,14 +541,12 @@ function decode(data) {
                     vs = [Number(val[1]), Number(val[2]), Number(val[3]), Number(val[4])]
                 }
 			} else if (textattrs.indexOf(attr) > -1) {
-                if (attr == 'choices') { // menu choices to be wrapped in a list
+                if (attr == 'choices') { // menu choices are wrapped in a list
                     val = m[3].slice(2,-2)
                     val = val.replace(/'/g, '') // remove quotes
-                    val = val.replace(/,/g, '') // remove commas
-                    let s = val.split(' ')
+                    let s = val.split(',')
                     val = []
-                    let a
-                    for (a of s) {val.push(a)}
+                    for (let a of s) {val.push(a)}
                 } else {
                     // '\n' doesn't survive JSON transmission, so in vpython.py we replace '\n' with '<br>'
                     val = m[3].replace(/<br>/g, "\n")
@@ -663,7 +661,8 @@ function handle_cmds(dcmds) {
 		//assembling cfg
 		var vlst = ['pos', 'color', 'size', 'axis', 'up', 'direction', 'center', 'forward', 'foreground',
 				 'background', 'ambient', 'linecolor', 'dot_color', 'trail_color', 'textcolor', 'attrval',
-				 'origin', 'normal', 'bumpaxis','texpos', 'start_face_color', 'end_face_color', 'marker_color']
+				 'origin', 'normal', 'bumpaxis','texpos', 'start_face_color', 'end_face_color', 'marker_color',
+				 'start_normal', 'end_normal']
 		if ((obj != 'gcurve') && ( obj != 'gdots' ) ) vlst.push( 'size' )
 		var cfg = {}
 		var objects = []
@@ -677,10 +676,14 @@ function handle_cmds(dcmds) {
 				   cfg[attr] = o2vec3(val)
 				}                            
 			} else if ( (attr == 'pos' && (obj == 'curve' || obj == 'points')) ||
-						(attr == 'path' && obj == 'extrusion') ) { // only occurs in constructor
-				var ptlist = []
-				for (var kk = 0; kk < val.length; kk++) {
-					ptlist.push( o2vec3(val[kk]) )
+						(obj == 'extrusion' && (attr == 'path' || attr == 'color') ) ) { // only occurs in constructor
+				let ptlist = []
+				if (val[0].length === undefined) { // a single triple [x,y,z] to convert to a vector
+					ptlist = o2vec3(val)
+				} else {
+					for (var kk = 0; kk < val.length; kk++) {
+						ptlist.push( o2vec3(val[kk]) )
+					}
 				}
 				cfg[attr] = ptlist
 			} else if (vlst.indexOf(attr) !== -1) {
@@ -912,48 +915,6 @@ function handle_cmds(dcmds) {
 			default:
 				console.log("Unable to create object")
 		}
-		
-		/*
-		if (obj === 'redisplay') {
-			var c = document.getElementById(cmd.sceneId)
-			if (c !== null) {
-				var scn = "#" + cmd.sceneId
-				glowObjs[idx].sceneclone = $(scn).clone(true,true)
-				//document.getElementById('glowscript2').appendChild(c)
-				//document.getElementById('glowscript2').replaceWith(c)
-				$('#glowscript2').replaceWith(c)
-				c = document.getElementById(cmd.sceneId)
-				var cont = scn + " .glowscript"
-				window.__context = { glowscript_container:    $(cont) }
-			} else {
-				window.__context = { glowscript_container: $("#glowscript").removeAttr("id") }                    
-				var newcnvs = canvas()
-				for (var obj in glowObjs[idx].objects) {
-					var o = glowObjs[idx].objects[obj]
-					if ((o.constructor.name !== 'curve') && (o.constructor.name !== 'points')) {
-						glowObjs[o.gidx] = o.clone({canvas: newcnvs})
-						var olen = newcnvs.objects.length
-						if (olen > 0) {
-							newcnvs.objects[olen - 1].gidx = o.gidx
-						}
-					}
-				}
-				glowObjs[idx] = newcnvs
-				$("#glowscript2").attr("id",cmd.sceneId)
-			}
-		} else if (obj === 'delete') {
-			b = glowObjs[idx]
-			//console.log("delete : ",idx)
-			if ((b !== null) || (b.visible !== undefined)) {
-				b.visible = false
-			}
-			glowObjs[idx] = null
-		} else if (obj === 'heartbeat') {
-			//console.log("heartbeat")
-		} else if (obj === 'debug') {
-			console.log("debug : ", cmd)
-		}
-		*/
 	} // end of cmds (constructors and special data)
 }
 
