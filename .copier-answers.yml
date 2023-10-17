@@ -1,0 +1,19 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: v4.2.2
+_src_path: https://github.com/jupyterlab/extension-template
+author_email: johncoady@shaw.ca
+author_name: John Coady
+data_format: string
+file_extension: ''
+has_binder: false
+has_settings: false
+kind: frontend
+labextension_name: jupyterlab_vpython
+mimetype: ''
+mimetype_name: ''
+project_short_description: A VPython extension for JupyterLab
+python_name: jupyterlab_vpython
+repository: https://github.com/jcoady/jupyterlab_vpython
+test: false
+viewer_name: ''
+

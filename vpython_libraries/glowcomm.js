@@ -166,7 +166,11 @@ function send() { // periodically send events and update_canvas and request obje
 
 // Should eventually have glowcomm.html, glowcom.js, and glowcommlab.js all import this common component.
 
+<<<<<<< HEAD
+window.__GSlang = "vpython" 
+=======
 window.__GSlang = "vpython"
+>>>>>>> 377ed27a710097b93ea91b6f343992f7f91c016b
 
 function msclock() {
     "use strict";
@@ -445,8 +449,12 @@ let attrsb = {'a':'userzoom', 'b':'userspin', 'c':'range', 'd':'autoscale', 'e':
               'p':'left', 'q':'right', 'r':'top', 's':'bottom', 't':'_cloneid',
               'u':'logx', 'v':'logy', 'w':'dot', 'x':'dot_radius', 
               'y':'markers', 'z':'legend', 'A':'label','B':'delta', 'C':'marker_color',
+<<<<<<< HEAD
+              'D':'size_units', 'E':'userpan', 'F':'scroll', 'G':'choices', 'H':'depth', 'I':'round'}
+=======
               'D':'size_units', 'E':'userpan', 'F':'scroll', 'G':'choices', 'H':'depth',
 			  'I':'round', 'J':'name', 'K':'offset', 'L':'attach_idx'}
+>>>>>>> 377ed27a710097b93ea91b6f343992f7f91c016b
 
 // methods are X in {'m': '23X....'} available: u
 let methods = {'a':'select', 'b':'pos', 'c':'start', 'd':'stop', 'f':'clear', // unused eghijklmnopvxyzCDFAB
@@ -460,7 +468,11 @@ let vecattrs = ['pos', 'up', 'color', 'trail_color', 'axis', 'size', 'origin',
                 'foreground', 'background', 'ray', 'ambient', 'center', 'forward', 'normal',
                 'marker_color', 'offset']
                 
+<<<<<<< HEAD
+var textattrs = ['text', 'align', 'caption', 'title', 'title_align', 'xtitle', 'ytitle', 'selected', 'capture',
+=======
 let textattrs = ['text', 'align', 'caption', 'title', 'title_align', 'xtitle', 'ytitle', 'selected', 'capture', 'name',
+>>>>>>> 377ed27a710097b93ea91b6f343992f7f91c016b
                  'label', 'append_to_caption', 'append_to_title', 'bind', 'unbind', 'pause', 'GSprint', 'choices']
 
 // patt gets idx and attr code; vpatt gets x,y,z of a vector            
@@ -505,12 +517,17 @@ function decode(data) {
                     vs = [Number(val[1]), Number(val[2]), Number(val[3]), Number(val[4])]
                 }
 			} else if (textattrs.indexOf(attr) > -1) {
+<<<<<<< HEAD
+				if (attr == 'choices') {          // menu choices are wrapped in a list
+					val = m[3].slice(2, -2).split("', '") // choices separated by ', '
+=======
                 if (attr == 'choices') { // menu choices are wrapped in a list
                     val = m[3].slice(2,-2)
                     val = val.replace(/'/g, '') // remove quotes
                     let s = val.split(',')
                     val = []
                     for (let a of s) {val.push(a)}
+>>>>>>> 377ed27a710097b93ea91b6f343992f7f91c016b
                 } else {
                     // '\n' doesn't survive JSON transmission, so in vpython.py we replace '\n' with '<br>'
                     val = m[3].replace(/<br>/g, "\n")
@@ -590,8 +607,12 @@ function handler(data) {
 		for (var i in data[d]) console.log(i, JSON.stringify(data[d][i]))
 	}
 	*/
+<<<<<<< HEAD
+
+=======
 	
 	
+>>>>>>> 377ed27a710097b93ea91b6f343992f7f91c016b
 	
 	if (data.cmds !== undefined && data.cmds.length > 0) handle_cmds(data.cmds)
 	if (data.methods !== undefined && data.methods.length > 0) handle_methods(data.methods)
@@ -619,7 +640,11 @@ function handle_cmds(dcmds) {
 		var vlst = ['pos', 'color', 'size', 'axis', 'up', 'direction', 'center', 'forward', 'foreground',
 				 'background', 'ambient', 'linecolor', 'dot_color', 'trail_color', 'textcolor', 'attrval',
 				 'origin', 'normal', 'bumpaxis','texpos', 'start_face_color', 'end_face_color', 'marker_color',
+<<<<<<< HEAD
+				 'start_normal', 'end_normal']
+=======
 				 'start_normal', 'end_normal', 'offset']
+>>>>>>> 377ed27a710097b93ea91b6f343992f7f91c016b
 		if ((obj != 'gcurve') && ( obj != 'gdots' ) ) vlst.push( 'size' )
 		var cfg = {}
 		var objects = []
