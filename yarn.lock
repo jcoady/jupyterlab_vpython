@@ -4048,6 +4048,7 @@ __metadata:
     eslint-plugin-prettier: ^5.0.0
     file-loader: ^6.2.0
     npm-run-all: ^4.1.5
+    plotly.js-dist-min: ^2.26.2
     prettier: ^3.0.0
     rimraf: ^5.0.1
     script-loader: ^0.7.2
@@ -4825,6 +4826,13 @@ __metadata:
   dependencies:
     find-up: ^4.0.0
   checksum: 9863e3f35132bf99ae1636d31ff1e1e3501251d480336edb1c211133c8d58906bed80f154a1d723652df1fda91e01c7442c2eeaf9dc83157c7ae89087e43c8d6
+  languageName: node
+  linkType: hard
+
+"plotly.js-dist-min@npm:^2.26.2":
+  version: 2.26.2
+  resolution: "plotly.js-dist-min@npm:2.26.2"
+  checksum: ed692d3e79b3d9d64cd6ddabce3ab551d11e15a2b42d80f9f167f01ea1d7770dcd768f79ee9d65e21b6e7c9f7133ceb0f6200f0a18dfebf1d81d5b6d6c0232ab
   languageName: node
   linkType: hard
 

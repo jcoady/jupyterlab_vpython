@@ -1,6 +1,6 @@
 {
     "name": "jupyterlab_vpython",
-    "version": "3.1.5",
+    "version": "3.1.6",
     "description": "A VPython extension for JupyterLab",
     "keywords": [
         "jupyter",
@@ -63,6 +63,7 @@
         "@jupyterlab/notebook": "^4.0.7",
         "@lumino/disposable": "^2.1.2",
         "file-loader": "^6.2.0",
+        "plotly.js-dist-min": "^2.26.2",
         "script-loader": "^0.7.2"
     },
     "devDependencies": {
