@@ -445,7 +445,7 @@ function control_handler(obj) {  // button, menu, slider, radio, checkbox, winpu
 	events.push(evt)
 }
 
-// attrs are X in {'a': '23X....'} avaiable: none
+// attrs are X in {'a': '23X....'} available: none
 let attrs = {'a':'pos', 'b':'up', 'c':'color', 'd':'trail_color', // don't use single and double quotes; available: comma, but maybe that would cause trouble
          'e':'ambient', 'f':'axis', 'g':'size', 'h':'origin', 'i':'textcolor',
          'j':'direction', 'k':'linecolor', 'l':'bumpaxis', 'm':'dot_color',
@@ -455,7 +455,7 @@ let attrs = {'a':'pos', 'b':'up', 'c':'color', 'd':'trail_color', // don't use s
          'q':'graph', 'r':'canvas', 's':'trail_radius', 
          't':'visible', 'u':'opacity', 'v':'shininess', 'w':'emissive',  
          'x':'make_trail', 'y':'trail_type', 'z':'interval', 'A':'pps', 'B':'retain',  
-         'C':'red', 'D':'green', 'F':'blue', 'G':'length', 'H':'width', 'I':'height', 'J':'radius',
+         'C':'red', 'D':'green', 'E':'ccw', 'F':'blue', 'G':'length', 'H':'width', 'I':'height', 'J':'radius',
          'K':'thickness', 'L':'shaftwidth', 'M':'headwidth', 'N':'headlength', 'O':'pickable',
          'P':'coils', 'Q':'xoffset', 'R':'yoffset',
          'S':'border', 'T':'line', 'U':'box', 'V':'space', 'W':'linewidth',
@@ -480,13 +480,13 @@ let attrsb = {'a':'userzoom', 'b':'userspin', 'c':'range', 'd':'autoscale', 'e':
               'u':'logx', 'v':'logy', 'w':'dot', 'x':'dot_radius', 
               'y':'markers', 'z':'legend', 'A':'label','B':'delta', 'C':'marker_color',
               'D':'size_units', 'E':'userpan', 'F':'scroll', 'G':'choices', 'H':'depth',
-			  'I':'round', 'J':'name', 'K':'offset', 'L':'attach_idx'}
+			  'I':'round', 'J':'name', 'K':'offset', 'L':'attach_idx', 'M':'ccw'}
 
 // methods are X in {'m': '23X....'} available: u
 let methods = {'a':'select', 'b':'pos', 'c':'start', 'd':'stop', 'f':'clear', // unused eghijklmnopvxyzCDFAB
 			   'q':'plot', 's':'add_to_trail',
                't':'follow', 'w':'clear_trail',
-               'G':'bind', 'H':'unbind', 'I':'waitfor', 'J':'pause', 'K':'pick', 'L':'GSprint',
+               'G':'bind', 'H':'unbind', 'I':'waitfor', 'J':'pause', 'K':'pick',
 		       'M':'delete', 'N':'capture'}
          
 let vecattrs = ['pos', 'up', 'color', 'trail_color', 'axis', 'size', 'origin', 
@@ -495,7 +495,7 @@ let vecattrs = ['pos', 'up', 'color', 'trail_color', 'axis', 'size', 'origin',
                 'marker_color', 'offset']
                 
 let textattrs = ['text', 'align', 'caption', 'title', 'title_align', 'xtitle', 'ytitle', 'selected', 'capture', 'name',
-                 'label', 'append_to_caption', 'append_to_title', 'bind', 'unbind', 'pause', 'GSprint', 'choices']
+                 'label', 'append_to_caption', 'append_to_title', 'bind', 'unbind', 'pause', 'choices']
 
 // patt gets idx and attr code; vpatt gets x,y,z of a vector            
 const patt = /(\d+)(.)(.*)/
@@ -917,9 +917,7 @@ async function handle_methods(dmeth) {
 		let val = cmd.val
 		let obj = glowObjs[idx]
 
-		if (method == 'GSprint') {
-			GSprint(val)
-		} else if (val == 'None') {
+		if (val == 'None') {
 			if (method == 'delete') obj['remove']()
 			else obj[method]()
 		} else if (method === 'rotate') {

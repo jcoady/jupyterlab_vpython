@@ -9,7 +9,7 @@ var isopen = false
 
 window.Plotly = Plotly
 
-console.log('START OF GLOWCOMM')
+console.log('START OF GLOWCOMM JS')
 
 IPython.notebook.kernel.comm_manager.register_target('glow',
     function(commChannel, msg) {
@@ -166,11 +166,7 @@ function send() { // periodically send events and update_canvas and request obje
 
 // Should eventually have glowcomm.html, glowcom.js, and glowcommlab.js all import this common component.
 
-<<<<<<< HEAD
 window.__GSlang = "vpython" 
-=======
-window.__GSlang = "vpython"
->>>>>>> 377ed27a710097b93ea91b6f343992f7f91c016b
 
 function msclock() {
     "use strict";
@@ -415,8 +411,8 @@ function control_handler(obj) {  // button, menu, slider, radio, checkbox, winpu
 	events.push(evt)
 }
 
-// attrs are X in {'a': '23X....'} avaiable: none
-let attrs = {'a':'pos', 'b':'up', 'c':'color', 'd':'trail_color', // don't use single and double quotes; available: comma, but maybe that would cause trouble
+// attrs are X in {'a': '23X....'} available: none
+var attrs = {'a':'pos', 'b':'up', 'c':'color', 'd':'trail_color', // don't use single and double quotes; available: comma, but maybe that would cause trouble
          'e':'ambient', 'f':'axis', 'g':'size', 'h':'origin', 'i':'textcolor',
          'j':'direction', 'k':'linecolor', 'l':'bumpaxis', 'm':'dot_color',
          'n':'foreground', 'o':'background', 'p':'ray', 'E':'center', '#':'forward', '+':'resizable',
@@ -425,7 +421,7 @@ let attrs = {'a':'pos', 'b':'up', 'c':'color', 'd':'trail_color', // don't use s
          'q':'graph', 'r':'canvas', 's':'trail_radius', 
          't':'visible', 'u':'opacity', 'v':'shininess', 'w':'emissive',  
          'x':'make_trail', 'y':'trail_type', 'z':'interval', 'A':'pps', 'B':'retain',  
-         'C':'red', 'D':'green', 'F':'blue', 'G':'length', 'H':'width', 'I':'height', 'J':'radius',
+         'C':'red', 'D':'green', 'E':'ccw', 'F':'blue', 'G':'length', 'H':'width', 'I':'height', 'J':'radius',
          'K':'thickness', 'L':'shaftwidth', 'M':'headwidth', 'N':'headlength', 'O':'pickable',
          'P':'coils', 'Q':'xoffset', 'R':'yoffset',
          'S':'border', 'T':'line', 'U':'box', 'V':'space', 'W':'linewidth',
@@ -443,43 +439,36 @@ let attrs = {'a':'pos', 'b':'up', 'c':'color', 'd':'trail_color', // don't use s
          '?':'font', '/':'texture'}
          
 // attrsb are X in {'b': '23X....'}; ran out of easily typable one-character codes
-let attrsb = {'a':'userzoom', 'b':'userspin', 'c':'range', 'd':'autoscale', 'e':'fov',
+var attrsb = {'a':'userzoom', 'b':'userspin', 'c':'range', 'd':'autoscale', 'e':'fov',
               'f':'normal', 'g':'data', 'h':'checked', 'i':'disabled', 'j':'selected',
               'k':'vertical', 'l':'min', 'm':'max', 'n':'step', 'o':'value',
               'p':'left', 'q':'right', 'r':'top', 's':'bottom', 't':'_cloneid',
               'u':'logx', 'v':'logy', 'w':'dot', 'x':'dot_radius', 
               'y':'markers', 'z':'legend', 'A':'label','B':'delta', 'C':'marker_color',
-<<<<<<< HEAD
-              'D':'size_units', 'E':'userpan', 'F':'scroll', 'G':'choices', 'H':'depth', 'I':'round'}
-=======
-              'D':'size_units', 'E':'userpan', 'F':'scroll', 'G':'choices', 'H':'depth',
-			  'I':'round', 'J':'name', 'K':'offset', 'L':'attach_idx'}
->>>>>>> 377ed27a710097b93ea91b6f343992f7f91c016b
+              'D':'size_units', 'E':'userpan', 'F':'scroll', 'G':'choices', 'H':'depth', 'I':'round',
+			  'J':'name', 'K':'offset', 'L':'attach_idx', 'M':'ccw'
+			}
 
-// methods are X in {'m': '23X....'} available: u
-let methods = {'a':'select', 'b':'pos', 'c':'start', 'd':'stop', 'f':'clear', // unused eghijklmnopvxyzCDFAB
+// methods are X in {'m': '23X....'}
+var methods = {'a':'select', 'b':'pos', 'c':'start', 'd':'stop', 'f':'clear', // unused eghijklmnopvxyzCDFAB
 			   'q':'plot', 's':'add_to_trail',
-               't':'follow', 'w':'clear_trail',
-               'G':'bind', 'H':'unbind', 'I':'waitfor', 'J':'pause', 'K':'pick', 'L':'GSprint',
+               't':'follow', 'u':'_attach_arrow', 'w':'clear_trail',
+               'G':'bind', 'H':'unbind', 'I':'waitfor', 'J':'pause', 'K':'pick', 
 		       'M':'delete', 'N':'capture'}
          
-let vecattrs = ['pos', 'up', 'color', 'trail_color', 'axis', 'size', 'origin', 
+var vecattrs = ['pos', 'up', 'color', 'trail_color', 'axis', 'size', 'origin', '_attach_arrow',
                 'direction', 'linecolor', 'bumpaxis', 'dot_color', 'ambient', 'add_to_trail', 'textcolor',
                 'foreground', 'background', 'ray', 'ambient', 'center', 'forward', 'normal',
-                'marker_color', 'offset']
+                'marker_color']
                 
-<<<<<<< HEAD
 var textattrs = ['text', 'align', 'caption', 'title', 'title_align', 'xtitle', 'ytitle', 'selected', 'capture',
-=======
-let textattrs = ['text', 'align', 'caption', 'title', 'title_align', 'xtitle', 'ytitle', 'selected', 'capture', 'name',
->>>>>>> 377ed27a710097b93ea91b6f343992f7f91c016b
-                 'label', 'append_to_caption', 'append_to_title', 'bind', 'unbind', 'pause', 'GSprint', 'choices']
+                 'label', 'append_to_caption', 'append_to_title', 'bind', 'unbind', 'pause', 'choices']
 
 // patt gets idx and attr code; vpatt gets x,y,z of a vector            
-const patt = /(\d+)(.)(.*)/
-const vpatt = /([^,]*),([^,]*),(.*)/
-const quadpatt = /([^,]*),([^,]*),(.*)/
-const plotpatt = /([^,]*),([^,]*)/
+var patt = /(\d+)(.)(.*)/
+var vpatt = /([^,]*),([^,]*),(.*)/
+var quadpatt = /([^,]*),([^,]*),(.*)/
+var plotpatt = /([^,]*),([^,]*)/
 
 function decode(data) { 
     "use strict";
@@ -491,12 +480,12 @@ function decode(data) {
 	var ms = []
 	
 	if ('attrs' in data) {
-		let c = data['attrs']
+		var c = data['attrs']
 		for (i=0; i<c.length; i++) { // step through the encoded attributes and methods
-			let d = c[i]
+			var d = c[i]
 			// constructor or appendcmd not currently compressed
-			let whichlist = d[0] // 'a' or 'b' or 'm'
-			let datatype = (whichlist == 'm') ? 'method' : 'attr'
+			var whichlist = d[0] // 'a' or 'b' or 'm'
+			var datatype = (whichlist == 'm') ? 'method' : 'attr'
 			s = d.slice(1)
 			m = s.match(patt)
 			idx = Number(m[1])
@@ -517,17 +506,8 @@ function decode(data) {
                     vs = [Number(val[1]), Number(val[2]), Number(val[3]), Number(val[4])]
                 }
 			} else if (textattrs.indexOf(attr) > -1) {
-<<<<<<< HEAD
 				if (attr == 'choices') {          // menu choices are wrapped in a list
 					val = m[3].slice(2, -2).split("', '") // choices separated by ', '
-=======
-                if (attr == 'choices') { // menu choices are wrapped in a list
-                    val = m[3].slice(2,-2)
-                    val = val.replace(/'/g, '') // remove quotes
-                    let s = val.split(',')
-                    val = []
-                    for (let a of s) {val.push(a)}
->>>>>>> 377ed27a710097b93ea91b6f343992f7f91c016b
                 } else {
                     // '\n' doesn't survive JSON transmission, so in vpython.py we replace '\n' with '<br>'
                     val = m[3].replace(/<br>/g, "\n")
@@ -607,12 +587,7 @@ function handler(data) {
 		for (var i in data[d]) console.log(i, JSON.stringify(data[d][i]))
 	}
 	*/
-<<<<<<< HEAD
 
-=======
-	
-	
->>>>>>> 377ed27a710097b93ea91b6f343992f7f91c016b
 	
 	if (data.cmds !== undefined && data.cmds.length > 0) handle_cmds(data.cmds)
 	if (data.methods !== undefined && data.methods.length > 0) handle_methods(data.methods)
@@ -640,11 +615,7 @@ function handle_cmds(dcmds) {
 		var vlst = ['pos', 'color', 'size', 'axis', 'up', 'direction', 'center', 'forward', 'foreground',
 				 'background', 'ambient', 'linecolor', 'dot_color', 'trail_color', 'textcolor', 'attrval',
 				 'origin', 'normal', 'bumpaxis','texpos', 'start_face_color', 'end_face_color', 'marker_color',
-<<<<<<< HEAD
 				 'start_normal', 'end_normal']
-=======
-				 'start_normal', 'end_normal', 'offset']
->>>>>>> 377ed27a710097b93ea91b6f343992f7f91c016b
 		if ((obj != 'gcurve') && ( obj != 'gdots' ) ) vlst.push( 'size' )
 		var cfg = {}
 		var objects = []
@@ -798,14 +769,7 @@ function handle_cmds(dcmds) {
 				}
 				break
 			}
-			case 'local_light': {
-				let g = glowObjs[idx] = local_light(cfg)
-				if (cfg.offset !== undefined) { // mocking up attach_light
-					g.__obj = glowObjs[cfg.attach_idx]
-					g.canvas.attached_lights.push(g)
-				}
-				break
-			}
+			case 'local_light':   {glowObjs[idx] = local_light(cfg); break}
 			case 'distant_light': {glowObjs[idx] = distant_light(cfg); break}
 			case 'canvas':        {
 				if ((typeof isjupyterlab_vpython !== 'undefined') && (isjupyterlab_vpython === true)) {
@@ -831,6 +795,19 @@ function handle_cmds(dcmds) {
 				break
 					// Display frames per second and render time:
 					//$("<div id='fps'/>").appendTo(glowObjs[idx].title)
+			}
+			case 'attach_arrow':  {
+                var attrs = ['pos', 'size', 'axis', 'up', 'color']
+				var o = glowObjs[cfg['obj']]
+				delete cfg['obj']
+				var attr = cfg['attr']
+				delete cfg['attr']
+                var val = cfg['attrval']
+                delete cfg['attrval']
+                if (attrs.indexOf(attr) < 0) attr = '_attach_arrow'
+                o.attr = val
+				glowObjs[idx] = attach_arrow( o, attr, cfg )
+				break
 			}
 			case 'attach_trail': {
 				if ( typeof cfg['_obj'] === 'string' ) {
@@ -863,13 +840,10 @@ function handle_cmds(dcmds) {
 				break
 			}
 			case 'radio': {
-				cfg.canvas = canvas.get_selected()
-				cfg = fix_location(cfg)
-				delete cfg.canvas
 				cfg.objName = obj
 				cfg.bind = control_handler
+				cfg = fix_location(cfg)
 				glowObjs[idx] = radio(cfg)
-				// glowObjs[idx].canvas = canvas.get_selected()
 				break
 			}
 			case 'button': {
@@ -905,16 +879,14 @@ function handle_cmds(dcmds) {
 async function handle_methods(dmeth) {
     "use strict";
 	//console.log('METHODS')
-	for (let idmeth=0; idmeth<dmeth.length; idmeth++) { // methods; cmd is ['idx':idx, 'attr':method, 'val':val]
-		let cmd = dmeth[idmeth]
-		let idx = cmd.idx
-		let method = cmd.attr
-		let val = cmd.val
-		let obj = glowObjs[idx]
+	for (var idmeth=0; idmeth<dmeth.length; idmeth++) { // methods; cmd is ['idx':idx, 'attr':method, 'val':val]
+		var cmd = dmeth[idmeth]
+		var idx = cmd.idx
+		var method = cmd.attr
+		var val = cmd.val
+		var obj = glowObjs[idx]
 
-		if (method == 'GSprint') {
-			GSprint(val)
-		} else if (val == 'None') {
+		ifif (val == 'None') {
 			if (method == 'delete') obj['remove']()
 			else obj[method]()
 		} else if (method === 'rotate') {
@@ -923,18 +895,20 @@ async function handle_methods(dmeth) {
 			glowObjs[idx]['pos'] = val
 		} else if (method === 'add_to_trail') {
 			obj['_func'] = val
+		} else if (method === '_attach_arrow') {
+            obj.obj._attach_arrow = val
 		} else if (method === 'bind') {
-			let evts = val.split(' ')
-			for (let evt in evts) {
-				let e = evts[evt]
+			var evts = val.split(' ')
+			for (var evt in evts) {
+				var e = evts[evt]
 				if (binds.indexOf(e) == -1) 
 					throw new Error('There is no error type "'+e+'"')
 			}
 			obj.bind(val, process_binding)
 		} else if (method === 'unbind') {
-			let evts = val.split(' ')
-			for (let evt in evts) {
-				let e = evts[evt]
+			var evts = val.split(' ')
+			for (var evt in evts) {
+				var e = evts[evt]
 				if (binds.indexOf(e) == -1) 
 					throw new Error('There is no error type "'+e+'"')
 			}
@@ -974,17 +948,18 @@ async function handle_methods(dmeth) {
 function handle_attrs(dattrs) {
     "use strict";
 	//console.log('ATTRS')
-	for (let idattrs=0; idattrs<dattrs.length; idattrs++) { // attributes; cmd is {'idx':idx, 'attr':attr, 'val':val}
-		let cmd = dattrs[idattrs]
-		let idx = cmd.idx
-		let obj = glowObjs[idx]
-		let attr = cmd['attr']
-		let val = cmd['val']
-		let triangle_quad = ['v0', 'v1', 'v2', 'v3']
+	for (var idattrs=0; idattrs<dattrs.length; idattrs++) { // attributes; cmd is {'idx':idx, 'attr':attr, 'val':val}
+		var cmd = dattrs[idattrs]
+		var idx = cmd.idx
+		var obj = glowObjs[idx]
+		var attr = cmd['attr']
+		var val = cmd['val']
+		var triangle_quad = ['v0', 'v1', 'v2', 'v3']
+		// vector attrs in attach_arrow have arbitrary names, so check for length 3 array instead
 		if (val instanceof vec) {
 			if (attr === 'pos' && (obj instanceof points || obj instanceof curve)) {
-				let ptlist = []
-				for (let kk = 0; kk < val.length; kk++) {
+				var ptlist = []
+				for (var kk = 0; kk < val.length; kk++) {
 					ptlist.push( val[kk] )
 				}
 				obj[attr] = ptlist
