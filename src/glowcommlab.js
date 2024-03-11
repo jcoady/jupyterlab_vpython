@@ -198,6 +198,17 @@ function send() { // periodically send events and update_canvas and request obje
 
 window.__GSlang = "vpython"
 
+// creating a glow namespace for glowscript function names that collide with other global function names
+let glowns = (function () {
+  var glowscriptTextFunction = text;
+  // return
+  return {
+    text: glowscriptTextFunction,
+  };
+})();
+// access the members inside the namespace
+//console.log("glowns.text type = ",typeof glowns.text);
+
 function msclock() {
     "use strict";
     if (performance.now) return performance.now()
@@ -792,14 +803,17 @@ function handle_cmds(dcmds) {
 			}
 			case 'text':     {
 				if (cfg._cloneid !== undefined) {
+					console.log("branch 1 = ");
 					var idoriginal = cfg._cloneid
 					delete cfg._cloneid
 					glowObjs[idx] = glowObjs[idoriginal].clone(cfg)
 				} else {
 					// Return text parameters to Python
-					var obj = glowObjs[idx] = text(cfg)
-					send_compound(obj.canvas['idx'], vec(obj.length, obj.descender, 0), 
+					var obj = glowObjs[idx] = typeof text === 'function' ? text(cfg) : typeof glowns.text === 'function' ? glowns.text(cfg) : undefined;
+					if (obj !== undefined) {
+						send_compound(obj.canvas['idx'], vec(obj.length, obj.descender, 0), 
                             obj.__comp.size, obj.up)
+					}
 				}
 				break
 			}

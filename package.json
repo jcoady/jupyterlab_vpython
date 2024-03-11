@@ -1,6 +1,6 @@
 {
     "name": "jupyterlab_vpython",
-    "version": "3.1.7",
+    "version": "3.1.8",
     "description": "A VPython extension for JupyterLab",
     "keywords": [
         "jupyter",
@@ -56,14 +56,14 @@
         "watch:labextension": "jupyter labextension watch ."
     },
     "dependencies": {
-        "@jupyterlab/application": "^4.0.7",
-        "@jupyterlab/apputils": "^4.1.7",
-        "@jupyterlab/coreutils": "^6.0.7",
-        "@jupyterlab/docregistry": "^4.0.7",
-        "@jupyterlab/notebook": "^4.0.7",
+        "@jupyterlab/application": "^4.1.4",
+        "@jupyterlab/apputils": "^4.2.4",
+        "@jupyterlab/coreutils": "^6.1.4",
+        "@jupyterlab/docregistry": "^4.1.4",
+        "@jupyterlab/notebook": "^4.1.4",
         "@lumino/disposable": "^2.1.2",
         "file-loader": "^6.2.0",
-        "plotly.js-dist-min": "^2.26.2",
+        "plotly.js-dist-min": "^2.30.0",
         "script-loader": "^0.7.2"
     },
     "devDependencies": {
